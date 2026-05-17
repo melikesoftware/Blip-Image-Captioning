@@ -1,46 +1,32 @@
-Hazır Model Öğrenimi: BLIP Image Captioning
+# Hazır Model Öğrenimi: BLIP Image Captioning
 
-## Assignment: Hazır Model Ödev Teslimi
+## Hazır Model ile Görsel Açıklama (BLIP Image Captioning)
 
-Bu proje, Transfer Learning kavramını uygulamak için Salesforce BLIP (Bootstrapping Language-Image Pre-training) modelini kullanarak görsel açıklama (image captioning) sistemi geliştirmeyi amaçlamaktadır.
-
-
-
-## Ödev Bilgileri
-
-- **Ders:** Yapay Zeka / Derin Öğrenme
-- **Konu:** Transfer Learning ve Hazır Modeller
-- **Model:** Salesforce BLIP Image Captioning Base
-- **Tarih:** Mayıs 2026
+Bu proje, Hugging Face üzerindeki hazır eğitilmiş (pre-trained) Salesforce BLIP modelini doğrudan kullanarak, yüklenen görsellere otomatik olarak İngilizce ve Türkçe açıklamalar (image captioning) üreten bir web uygulamasıdır. Proje mimarisi ve arayüzü Windsurf AI yardımıyla geliştirilmiştir.
 
 ---
 
-## Transfer Learning Nedir?
+## Özellikler
 
-Transfer Learning, önceden eğitilmiş bir modelin (pre-trained model) belirli bir görev için eğitilmiş ağırlıklarını alıp, farklı bir görevde kullanma tekniğidir. Bu yaklaşım:
+✅ **Sıfır Eğitim (Zero-Shot):** Model yeniden eğitilmeden, Hugging Face ağırlıklarıyla doğrudan tahmin yapar.
 
-- **Zaman tasarrufu** sağlar (sıfırdan eğitim yerine)
-- **Daha az veri** ile yüksek performans elde edilir
-- **Hesaplama kaynaklarından tasarruf** sağlar
-- **Daha iyi genelleme** yeteneği sunar
+🖼️ **Sürükle-Bırak Arayüzü:** FastAPI ve modern JavaScript ile sayfa yenilenmeden dinamik görsel yükleme.
+
+🌐 **Çok Dilli Destek:** deep-translator entegrasyonu ile anlık Türkçe çeviri.
+
+⚙️ **Gelişmiş Çıkarım (Inference):** Beam search ($num\_beams=5$) ve uzunluk optimizasyonu ile kaliteli metin üretimi.
 
 ---
 
-## BLIP Modeli Hakkında
+## Model Özeti
 
-**BLIP (Bootstrapping Language-Image Pre-training)**, Salesforce tarafından geliştirilen bir görüntü-metin modelidir.
-
-- **Model:** `Salesforce/blip-image-captioning-base`
-- **Görev:** Görsel açıklama oluşturma (Image Captioning)
-- **Framework:** Transformers (Hugging Face)
-- **Dil:** İngilizce (Türkçe çeviri ile desteklenir)
-
-### Model Özellikleri
-
-- **Parametre Sayısı:** ~390M
-- **Girdi:** Görsel (resim)
-- **Çıktı:** Görsel açıklama (metin)
-- **Eğitim Verisi:** COCO Captions, Visual Genome, vb.
+| Metrik / Özellik | Değer / Açıklama |
+|------------------|------------------|
+| Kullanılan Model | Salesforce/blip-image-captioning-base (Hugging Face) |
+| Parametre Sayısı | ~390 Milyon |
+| Görev (Task) | Image-to-Text (Görsel Açıklama Oluşturma) |
+| Temel Teknolojiler | FastAPI, PyTorch, Transformers, Jinja2 |
+| Model Çıkarım Parametreleri | max_length=100, num_beams=5, early_stopping=True |
 
 ---
 
@@ -48,25 +34,29 @@ Transfer Learning, önceden eğitilmiş bir modelin (pre-trained model) belirli 
 
 ```
 PythonProject26/
-├── blip_service.py          # BLIP model servisi
-├── blip_web_app.py          # FastAPI web uygulaması
-├── requirements.txt         # Python bağımlılıkları
-├── static/
-│   ├── blip_style.css       # Stil dosyası
-│   └── blip_app.js          # JavaScript kodu
-└── templates/
-    └── blip_index.html     # HTML arayüzü
+├── blip_service.py       # Hugging Face model yükleme ve çıkarım (inference)
+├── blip_web_app.py       # FastAPI backend ve API uç noktaları
+├── requirements.txt      # Bağımlılık listesi
+├── templates/
+│   └── blip_index.html   # HTML arayüzü (Jinja2)
+└── static/
+    ├── blip_style.css    # Responsive CSS tasarımı
+    └── blip_app.js       # Sürükle-bırak ve API isteklerini yöneten JS
 ```
 
 ---
 
 ## Kurulum
 
-### 1. Sanal Ortam Oluşturma
+### 1. Sanal Ortam Oluşturma & Aktifleştirme
 
 ```bash
 python -m venv .venv
+
+# Windows için:
 .venv\Scripts\activate
+# macOS / Linux için:
+source .venv/bin/activate
 ```
 
 ### 2. Bağımlılıkları Yükleme
@@ -75,106 +65,33 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-### 3. Uygulamayı Çalıştırma
+---
+
+## Kullanım
+
+Uygulamayı başlatmak için terminalde şu komutu çalıştırın:
 
 ```bash
 python blip_web_app.py
 ```
 
-Tarayıcıda açın: http://127.0.0.1:8001
+Tarayıcınızda şu adrese gidin: http://127.0.0.1:8001
+
+💡 **Not:** İlk çalıştırmada ~390M parametrelik BLIP modeli Hugging Face hub üzerinden yerel bilgisayarınıza (~/.cache) otomatik olarak indirilir. Sonraki çalıştırmalarda internet gerekmez.
 
 ---
 
-## Kullanım
+## Model Çıktı Örnekleri
 
-### Web Arayüzü
-
-1. **Görsel Yükle:** Sürükle-bırak veya tıklayarak görsel seçin
-2. **Açıklama Oluştur:** "Açıklama Oluştur" butonuna tıklayın
-3. **Sonucu Gör:** Türkçe açıklama otomatik olarak oluşturulur
-4. **Yeni Görsel:** "Yeni Resim Yükle" butonu ile başka görsel deneyin
-
-### Özellikler
-
-- ✅ Sürükle-bırak görsel yükleme
-- ✅ Otomatik Türkçe çeviri
-- ✅ Sayfa yenilemeden yeni görsel yükleme
-- ✅ Detaylı açıklama (max_length=100, num_beams=5)
-- ✅ Modern ve responsive arayüz
+| Girdi Görseli | Üretilen İngilizce Açıklama | Otomatik Türkçe Çeviri |
+|---------------|----------------------------|------------------------|
+| [Yüklenen Pasta Resmi] | "a close up of a pastry on a spoon" | "bir kaşık üzerindeki bir pastanın yakın çekimi" |
+| [Yüklenen Köpek Resmi] | "a dog running in the grass" | "çimlerde koşan bir köpek" |
 
 ---
 
-## Teknik Detaylar
-
-### Model Konfigürasyonu
-
-```python
-# BLIP Model Parametreleri
-max_length = 100          # Maksimum açıklama uzunluğu
-num_beams = 5             # Beam search parametresi
-early_stopping = True     # Erken durdurma
-```
-
-### Türkçe Çeviri
-
-- **Kütüphane:** deep-translator
-- **Kaynak Dil:** Otomatik (İngilizce)
-- **Hedef Dil:** Türkçe
-
-### Web Framework
-
-- **Framework:** FastAPI
-- **Template Engine:** Jinja2
-- **Static Files:** CSS, JavaScript
-- **Port:** 8001
-
----
-
-## Transfer Learning Uygulaması
-
-Bu projede transfer learning şu şekilde uygulanmıştır:
-
-1. **Hazır Model Yükleme:** Hugging Face'den BLIP modeli indirildi
-2. **Model Adaptasyonu:** Görsel açıklama görevi için kullanıldı
-3. **Parametre Ayarları:** Model çıktısı optimize edildi
-4. **Dil Adaptasyonu:** Türkçe çeviri katmanı eklendi
-
-### Avantajlar
-
-- ✅ Sıfırdan eğitime gerek yok
-- ✅ COCO veri seti ile eğitilmiş ağırlıklar kullanıldı
-- ✅ Yüksek performans (milyonlarca görsel üzerinde eğitildi)
-- ✅ Hızlı implementasyon
-
----
-
-## Performans
-
-### Model Çıktı Örnekleri
-
-| Görsel | İngilizce Açıklama | Türkçe Açıklama |
-|--------|-------------------|-----------------|
-| Pasta | "a close up of a pastry on a spoon" | "bir kaşık üzerindeki bir pastanın yakın çekimi" |
-| Köpek | "a dog running in the grass" | "çimlerde koşan bir köpek" |
-
-### Sistem Gereksinimleri
+## Sistem Gereksinimleri
 
 - **Python:** 3.8+
-- **RAM:** 8 GB+ (CPU), 12 GB+ (GPU önerilir)
-- **Disk:** ~2 GB (model cache)
-- **İnternet:** İlk çalıştırmada model indirme için gerekli
-
----
-
-## Öğrenme Kazanımları
-
-Bu proje ile aşağıdaki konular öğrenildi:
-
-1. **Transfer Learning** kavramı ve uygulaması
-2. **Hugging Face Transformers** kullanımı
-3. **Pre-trained Models** entegrasyonu
-4. **FastAPI** ile web uygulaması geliştirme
-5. **Model Fine-tuning** parametre optimizasyonu
-6. **Dil Adaptasyonu** ve çeviri entegrasyonu
-
-
+- **RAM:** En az 8 GB (CPU modu için) / 4 GB VRAM (GPU/CUDA modu için)
+- **Depolama:** ~2 GB boş disk alanı (Model cache için)
