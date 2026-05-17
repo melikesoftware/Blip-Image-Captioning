@@ -1,10 +1,10 @@
-# Transfer Learning Ödevi - BLIP Image Captioning
+Hazır Model Öğrenimi: BLIP Image Captioning
 
 ## Assignment: Hazır Model Ödev Teslimi
 
-Bu proje, **Transfer Learning** kavramını uygulamak için Salesforce BLIP (Bootstrapping Language-Image Pre-training) modelini kullanarak görsel açıklama (image captioning) sistemi geliştirmeyi amaçlamaktadır.
+Bu proje, Transfer Learning kavramını uygulamak için Salesforce BLIP (Bootstrapping Language-Image Pre-training) modelini kullanarak görsel açıklama (image captioning) sistemi geliştirmeyi amaçlamaktadır.
 
----
+
 
 ## Ödev Bilgileri
 
@@ -177,25 +177,4 @@ Bu proje ile aşağıdaki konular öğrenildi:
 5. **Model Fine-tuning** parametre optimizasyonu
 6. **Dil Adaptasyonu** ve çeviri entegrasyonu
 
----
 
-## Kaynaklar
-
-- [BLIP Paper](https://arxiv.org/abs/2201.12086)
-- [Hugging Face BLIP Model](https://huggingface.co/Salesforce/blip-image-captioning-base)
-- [Transformers Documentation](https://huggingface.co/docs/transformers)
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-
----
-
-## Öğrenci Bilgileri
-
-- **Öğrenci Adı:** [İsminizi Buraya Yazın]
-- **Öğrenci Numarası:** [Numaranızı Buraya Yazın]
-- **Bölüm:** [Bölümünüzü Buraya Yazın]
-
----
-
-## Lisans
-
-Bu proje eğitim amaçlıdır. BLIP modeli Apache 2.0 lisansı altındadır.
